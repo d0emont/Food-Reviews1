@@ -1,0 +1,2887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pass or Ass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        #loginScreen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10000;
+            background: linear-gradient(135deg, #F5F5F7 0%, #E8E8EA 100%);
+        }
+
+        .login-box {
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            padding: 60px 50px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            max-width: 520px;
+        }
+
+        .login-box h1 {
+            margin-bottom: 24px;
+            color: #1A1A1A;
+            font-size: 2.8em;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .login-box p {
+            color: #666666;
+            margin-bottom: 36px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .google-login-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .google-login-btn:hover {
+            background: #0051D5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        #appContent {
+            display: none;
+        }
+
+        .user-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(0, 122, 255, 0.3);
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #E0E0E0;
+        }
+
+        .user-info span {
+            color: #007AFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9em;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 2px solid #FF3B30;
+            color: #FF3B30;
+            padding: 5px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 102, 0.2);
+            box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+        }
+
+        .share-btn {
+            background: transparent;
+            border: 2px solid #FFA500;
+            color: #FFA500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+            ;
+            letter-spacing: 1px;
+            margin-left: 10px;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 255, 0, 0.2);
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+        }
+
+        .rating-comment {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin-top: 10px;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .rating-comment:focus {
+            outline: none;
+            border-color: #007AFF;
+        }
+
+        .rating-comment::placeholder {
+            color: #999999;
+            font-style: italic;
+        }
+
+        .pass-ass-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .pass-ass-option {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .pass-ass-option input[type="radio"] {
+            display: none;
+        }
+
+        .pass-box,
+        .ass-box {
+            display: block;
+            padding: 20px;
+            border: 3px solid #E0E0E0;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            background: #FFFFFF;
+        }
+
+        .pass-box {
+            color: #34C759;
+        }
+
+        .ass-box {
+            color: #FF3B30;
+        }
+
+        .pass-ass-option input[type="radio"]:checked + .pass-box {
+            border-color: #34C759;
+            background: #E8F5E9;
+            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.3);
+            transform: scale(1.05);
+        }
+
+        .pass-ass-option input[type="radio"]:checked + .ass-box {
+            border-color: #FF3B30;
+            background: #FFEBEE;
+            box-shadow: 0 4px 16px rgba(255, 59, 48, 0.3);
+            transform: scale(1.05);
+        }
+
+        .pass-ass-option:hover .pass-box {
+            border-color: #34C759;
+            background: #F5FFF5;
+        }
+
+        .pass-ass-option:hover .ass-box {
+            border-color: #FF3B30;
+            background: #FFF5F5;
+        }
+
+        .review-type-btn {
+            background: #FFFFFF;
+            border: 2px solid #E0E0E0;
+            color: #666666;
+            padding: 15px 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .review-type-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-type-btn.active {
+            background: #007AFF;
+            color: #FFFFFF;
+            border-color: #007AFF;
+            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+        }
+
+        .social-tab-container {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid #E0E0E0;
+            color: #007AFF;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            ;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
+        }
+
+        .tab-btn.active {
+            background: rgba(0, 122, 255, 0.2);
+            border-color: #666666;
+            color: #666666;
+            box-shadow: 0 0 20px rgba(102, 102, 102, 0.5);
+        }
+
+        .tab-btn:hover {
+            background: rgba(0, 122, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .profile-section {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            padding: 25px;
+            box-shadow: 
+                0 0 20px rgba(0, 122, 255, 0.3),
+                inset 0 0 20px rgba(0, 122, 255, 0.05);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 1px solid #E0E0E0;
+        }
+
+        .profile-info h2 {
+            color: #007AFF;
+            margin-bottom: 5px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .profile-username {
+            color: #666666;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9em;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .stat {
+            color: #007AFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .stat strong {
+            color: #666666;
+            font-size: 1.2em;
+        }
+
+        .username-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .username-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #007AFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
+        }
+
+        .search-section {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            background: #FFFFFF;
+            border: 2px solid #666666;
+            padding: 25px;
+            box-shadow: 
+                0 0 20px rgba(102, 102, 102, 0.3),
+                inset 0 0 20px rgba(102, 102, 102, 0.05);
+        }
+
+        .search-section h3 {
+            color: #666666;
+            margin-bottom: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            ;
+        }
+
+        .user-result {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(0, 122, 255, 0.05);
+            border: 1px solid rgba(0, 122, 255, 0.2);
+        }
+
+        .user-result-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-result-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid #E0E0E0;
+        }
+
+        .user-result-details {
+            color: #007AFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .user-result-username {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .user-result-email {
+            font-size: 0.85em;
+            color: #666666;
+        }
+
+        .follow-btn {
+            background: transparent;
+            border: 1px solid #E0E0E0;
+            color: #007AFF;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            ;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .follow-btn:hover {
+            background: rgba(0, 122, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
+        }
+
+        .follow-btn.following {
+            border-color: #666666;
+            color: #666666;
+            background: rgba(102, 102, 102, 0.1);
+        }
+
+        .feed-review {
+            background: #FFFFFF;
+            backdrop-filter: blur(10px);
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 
+                0 0 20px rgba(0, 122, 255, 0.3),
+                inset 0 0 20px rgba(0, 122, 255, 0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .feed-review-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 122, 255, 0.3);
+        }
+
+        .feed-review-author img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #E0E0E0;
+        }
+
+        .feed-review-author-info {
+            color: #007AFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .feed-review-author-username {
+            font-weight: 600;
+        }
+
+        .feed-review-author-time {
+            font-size: 0.85em;
+            color: #666666;
+        }
+
+        .review-interactions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 122, 255, 0.3);
+        }
+
+        .interaction-btn {
+            background: transparent;
+            border: 1px solid #E0E0E0;
+            color: #007AFF;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            ;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .interaction-btn:hover {
+            background: rgba(0, 122, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.5);
+        }
+
+        .interaction-btn.saved {
+            border-color: #FFA500;
+            color: #FFA500;
+            background: rgba(255, 255, 0, 0.1);
+        }
+
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(0, 122, 255, 0.3);
+        }
+
+        .comments-header {
+            color: #666666;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 1em;
+            margin-bottom: 15px;
+            ;
+        }
+
+        .comment {
+            background: rgba(0, 122, 255, 0.05);
+            border-left: 3px solid #007AFF;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .comment-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #007AFF;
+        }
+
+        .comment-author-name {
+            color: #007AFF;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9em;
+        }
+
+        .comment-time {
+            color: #666666;
+            font-size: 0.75em;
+            margin-left: auto;
+        }
+
+        .comment-text {
+            color: #007AFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-left: 40px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #007AFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9em;
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: #666666;
+            box-shadow: 0 0 15px rgba(102, 102, 102, 0.4);
+        }
+
+        .comment-submit {
+            background: transparent;
+            border: 2px solid #666666;
+            color: #666666;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            ;
+            transition: all 0.3s ease;
+        }
+
+        .comment-submit:hover {
+            background: rgba(102, 102, 102, 0.2);
+            box-shadow: 0 0 10px rgba(102, 102, 102, 0.5);
+        }
+
+        .saved-reviews-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .saved-badge {
+            background: rgba(255, 255, 0, 0.2);
+            border: 1px solid #FFA500;
+            color: #FFA500;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            ;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #1A1A1A;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 
+                    0 0 10px #007AFF,
+                    0 0 20px #007AFF,
+                    0 0 30px #007AFF,
+                    0 0 40px #666666,
+                    0 0 70px #666666,
+                    0 0 80px #666666;
+            }
+            20%, 24%, 55% {
+            }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .add-review-btn {
+            background: #007AFF;
+            color: #FFFFFF;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto 30px;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .add-review-btn:hover {
+            background: #0051D5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            padding: 30px;
+            border: 2px solid #666666;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 
+                0 0 30px rgba(102, 102, 102, 0.5),
+                inset 0 0 30px rgba(102, 102, 102, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #007AFF;
+            
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #666666;
+            
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #007AFF;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            ;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+            
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: rgba(0, 0, 0, 0.5);
+            color: #007AFF;
+            box-shadow: 
+                0 0 10px rgba(0, 122, 255, 0.2),
+                inset 0 0 10px rgba(0, 122, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #666666;
+            box-shadow: 
+                0 0 20px rgba(102, 102, 102, 0.4),
+                inset 0 0 15px rgba(102, 102, 102, 0.2);
+        }
+
+        .form-group input[type="text"]::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(0, 122, 255, 0.5);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        select {
+            background: rgba(0, 0, 0, 0.7) !important;
+            color: #007AFF !important;
+            border: 1px solid #E0E0E0 !important;
+            border-radius: 8px !important;
+            padding: 12px 20px !important;
+            font-size: 1em !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            cursor: pointer !important;
+            box-shadow: 
+                0 0 10px rgba(0, 122, 255, 0.3),
+                inset 0 0 10px rgba(0, 122, 255, 0.1) !important;
+            transition: all 0.3s ease !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 10px center !important;
+            font-weight: 600 !important;
+            letter-spacing: 1px !important;
+             !important;
+        }
+
+        select:hover {
+            background: rgba(0, 122, 255, 0.1) !important;
+            box-shadow: 
+                0 0 15px rgba(0, 122, 255, 0.5),
+                inset 0 0 15px rgba(0, 122, 255, 0.2) !important;
+        }
+
+        select:focus {
+            outline: none !important;
+            border-color: #666666 !important;
+            box-shadow: 
+                0 0 20px rgba(102, 102, 102, 0.5),
+                inset 0 0 15px rgba(102, 102, 102, 0.2) !important;
+        }
+
+        select option {
+            background: #FFFFFF !important;
+            color: #007AFF !important;
+            padding: 10px !important;
+        }
+
+        .stars {
+            display: flex;
+            gap: 5px;
+            font-size: 2em;
+        }
+
+        .star {
+            cursor: pointer;
+            color: rgba(255, 255, 0, 0.3);
+            transition: color 0.2s;
+            
+        }
+
+        .star.active,
+        .star:hover {
+            color: #FFA500;
+            
+        }
+
+        .photo-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .photo-upload:hover {
+            border-color: #667eea;
+        }
+
+        .photo-upload input {
+            display: none;
+        }
+
+        .photo-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .photo-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .photo-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .submit-btn {
+            background: transparent;
+            color: #666666;
+            border: 3px solid #666666;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 15px rgba(102, 102, 102, 0.4),
+                inset 0 0 10px rgba(102, 102, 102, 0.1);
+            ;
+            letter-spacing: 2px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .submit-btn:hover {
+            background: rgba(102, 102, 102, 0.2);
+            box-shadow: 
+                0 0 25px rgba(102, 102, 102, 0.6),
+                inset 0 0 20px rgba(102, 102, 102, 0.2);
+        }
+
+        .reviews-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .review-card {
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .review-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .review-title {
+            flex: 1;
+        }
+
+        .review-title h3 {
+            color: #1A1A1A;
+            margin-bottom: 5px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 600;
+        }
+
+        .review-title .dish {
+            color: #666666;
+            font-size: 0.95em;
+        }
+
+        .category-badges {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .badge-cuisine {
+            background: #E3F2FD;
+            color: #007AFF;
+        }
+
+        .badge-style {
+            background: #F3E5F5;
+            color: #9C27B0;
+        }
+
+        .review-rating {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .rating-stars {
+            color: #FFB300;
+            font-size: 1.3em;
+        }
+
+        .rating-breakdown {
+            font-size: 0.85em;
+            color: #007AFF;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .rating-breakdown div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3px;
+        }
+
+        .rating-breakdown .label {
+            font-weight: 500;
+            margin-right: 10px;
+            color: #666666;
+        }
+
+        .rating-breakdown .stars-small {
+            color: #FFA500;
+            font-size: 0.9em;
+            
+        }
+
+        .visit-count {
+            color: #007AFF;
+            font-size: 0.85em;
+            margin-top: 5px;
+            
+        }
+
+        .review-photos {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        .review-photo {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .review-notes {
+            color: #007AFF;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 122, 255, 0.3);
+        }
+
+        .review-date {
+            color: #666666;
+            font-size: 0.9em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid #E0E0E0;
+            color: #007AFF;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #F5F5F7;
+            border-color: #007AFF;
+        }
+
+        .delete-btn {
+            border-color: #FF3B30;
+            color: #FF3B30;
+        }
+
+        .delete-btn:hover {
+            background: #FFF5F5;
+            border-color: #FF3B30;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666666;
+            padding: 60px 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #1A1A1A;
+        }
+
+        .empty-state p {
+            color: #666666;
+        }
+
+        .us-map-container {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 30px;
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            box-shadow: 
+                0 0 20px rgba(0, 122, 255, 0.3),
+                inset 0 0 20px rgba(0, 122, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .us-map-container h2 {
+            color: #007AFF;
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: 2px;
+            ;
+            margin-bottom: 20px;
+            
+        }
+
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .map-stats {
+            text-align: center;
+            margin-top: 20px;
+            color: #666666;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.9em;
+            
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .review-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .review-rating {
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 2em;
+                white-space: normal;
+            }
+
+            .login-box {
+                padding: 40px 30px;
+                max-width: 90%;
+            }
+
+            .login-box h1 {
+                font-size: 2.2em;
+            }
+
+            .login-box p {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <h1>Pass✅ or Ass🍑!</h1>
+            <p>Restaurants, new running gel, or any product in the world—track what you love and never forget what wasn't worth it.</p>
+            <button class="google-login-btn" onclick="loginWithGoogle()">
+                <svg width="20" height="20" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                    <path fill="none" d="M0 0h48v48H0z"></path>
+                </svg>
+                Sign in with Google
+            </button>
+        </div>
+    </div>
+
+    <!-- User Info (shown when logged in) -->
+    <div class="user-info" id="userInfo" style="display: none;">
+        <img id="userAvatar" src="" alt="User">
+        <span id="userEmail"></span>
+        <button class="logout-btn" onclick="logoutUser()">Logout</button>
+    </div>
+
+    <!-- Main App Content -->
+    <div id="appContent">
+    <div class="container">
+        <h1>Pass✅ or Ass🍑!</h1>
+
+        <!-- Review Type Selector -->
+        <div style="max-width: 600px; margin: 0 auto 40px; display: flex; gap: 15px; justify-content: center;">
+            <button class="review-type-btn active" id="restaurantTypeBtn" onclick="switchReviewType('restaurant')">
+                🍽️ Restaurants
+            </button>
+            <button class="review-type-btn" id="productTypeBtn" onclick="switchReviewType('product')">
+                📦 Products
+            </button>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="social-tab-container">
+            <button class="tab-btn active" onclick="switchTab('myReviews')">My Reviews</button>
+            <button class="tab-btn" onclick="switchTab('feed')">Feed</button>
+            <button class="tab-btn" onclick="switchTab('saved')">Saved</button>
+            <button class="tab-btn" onclick="switchTab('social')">Social</button>
+        </div>
+
+        <!-- My Reviews Tab -->
+        <div id="myReviewsTab" class="tab-content active">
+        <button class="add-review-btn" onclick="openModal()">+ Add New Review</button>
+
+        <div style="max-width: 800px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+            <select id="cityFilter" onchange="applyFilters()">
+                <option value="all">All Cities</option>
+            </select>
+            <select id="cuisineFilter" onchange="applyFilters()">
+                <option value="all">All Cuisines</option>
+            </select>
+            <select id="diningStyleFilter" onchange="applyFilters()">
+                <option value="all">All Styles</option>
+            </select>
+        </div>
+
+        <div id="reviewsList" class="reviews-list"></div>
+        <div id="emptyState" class="empty-state">
+            <h2>No reviews yet!</h2>
+            <p>Start tracking your dining experiences by adding your first review.</p>
+        </div>
+
+        <!-- US Map -->
+        <div class="us-map-container">
+            <h2>🗺️ Food Journey Map</h2>
+            <div class="map-wrapper">
+                <div id="map" style="width: 100%; height: 500px; border: 1px solid #E0E0E0; box-shadow: 0 0 20px rgba(0, 122, 255, 0.3);"></div>
+            </div>
+            <div class="map-stats" id="mapStats">
+                <span id="reviewCount">0 reviews</span> • <span id="cityCount">0 cities</span> visited
+            </div>
+        </div>
+        </div> <!-- End My Reviews Tab -->
+
+        <!-- Feed Tab -->
+        <div id="feedTab" class="tab-content">
+            <div id="feedList" style="max-width: 800px; margin: 0 auto;">
+                <div class="empty-state">
+                    <h2>No reviews in your feed!</h2>
+                    <p>Follow other users to see their reviews here.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Tab -->
+        <div id="savedTab" class="tab-content">
+            <div class="saved-reviews-section">
+                <h2 style="color: #FFA500; text-align: center; margin-bottom: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; ;">💾 Saved Reviews</h2>
+                <div id="savedList">
+                    <div class="empty-state">
+                        <h2>No saved reviews yet!</h2>
+                        <p>Save reviews from your feed to reference them later.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Tab -->
+        <div id="socialTab" class="tab-content">
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <div class="profile-header">
+                    <img id="profileAvatar" src="" alt="Profile" class="profile-avatar-large">
+                    <div class="profile-info">
+                        <h2 id="profileDisplayName"></h2>
+                        <div class="profile-username" id="profileUsernameDisplay">Set your username below</div>
+                        <div class="profile-stats">
+                            <div class="stat"><strong id="reviewsCount">0</strong> Reviews</div>
+                            <div class="stat"><strong id="followersCount">0</strong> Followers</div>
+                            <div class="stat"><strong id="followingCount">0</strong> Following</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="username-form">
+                    <input type="text" id="usernameInput" class="username-input" placeholder="Choose your username (e.g., @foodlover123)" maxlength="20">
+                    <button class="tab-btn" onclick="setUsername()">Set Username</button>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <h3>🔍 Find Users</h3>
+                <div class="username-form">
+                    <input type="text" id="userSearchInput" class="username-input" placeholder="Search by username or email">
+                    <button class="tab-btn" onclick="searchUsers()">Search</button>
+                </div>
+                <div id="searchResults" style="margin-top: 20px;"></div>
+            </div>
+
+            <!-- Following List -->
+            <div class="search-section">
+                <h3>👥 Following</h3>
+                <div id="followingList"></div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- End appContent -->
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getDatabase, ref, set, get, remove, onValue, query, orderByChild } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase configuration - YOU NEED TO REPLACE THIS WITH YOUR OWN
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const provider = new GoogleAuthProvider();
+
+        let currentUser = null;
+
+        // Auth state observer
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appContent').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userEmail').textContent = user.email;
+                document.getElementById('userAvatar').src = user.photoURL || 'https://via.placeholder.com/40';
+                loadReviewsFromFirebase();
+            } else {
+                currentUser = null;
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('appContent').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'none';
+            }
+        });
+
+        // Login function
+        window.loginWithGoogle = async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please try again.');
+            }
+        };
+
+        // Logout function
+        window.logoutUser = async () => {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        };
+
+        // Load reviews from Firebase
+        async function loadReviewsFromFirebase() {
+            const reviewsRef = ref(database, `reviews/${currentUser.uid}`);
+            onValue(reviewsRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    reviews = Object.values(data);
+                    reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+                } else {
+                    reviews = [];
+                }
+                updateFilters();
+                displayReviews();
+                updateMap();
+            });
+        }
+
+        // Save review to Firebase
+        window.saveReviewToFirebase = async (review) => {
+            if (!currentUser) return;
+            const reviewRef = ref(database, `reviews/${currentUser.uid}/${review.id}`);
+            await set(reviewRef, review);
+            
+            // Reload feed for followers
+            if (window.loadFeed) {
+                window.loadFeed();
+            }
+        };
+
+        // Delete review from Firebase
+        window.deleteReviewFromFirebase = async (reviewId) => {
+            if (!currentUser) return;
+            const reviewRef = ref(database, `reviews/${currentUser.uid}/${reviewId}`);
+            await remove(reviewRef);
+        };
+
+        // Share review with another user
+        window.shareReviewWith = async (reviewId, targetEmail) => {
+            if (!currentUser) return;
+            
+            // Get all users to find the target user ID
+            const usersRef = ref(database, 'userEmails');
+            const snapshot = await get(usersRef);
+            const users = snapshot.val();
+            
+            let targetUserId = null;
+            if (users) {
+                for (const [uid, email] of Object.entries(users)) {
+                    if (email === targetEmail) {
+                        targetUserId = uid;
+                        break;
+                    }
+                }
+            }
+            
+            if (!targetUserId) {
+                alert('User not found. Make sure they have logged in at least once.');
+                return;
+            }
+            
+            // Get the review
+            const review = reviews.find(r => r.id === reviewId);
+            if (!review) return;
+            
+            // Copy review to target user
+            const sharedReviewRef = ref(database, `reviews/${targetUserId}/${review.id}`);
+            await set(sharedReviewRef, {
+                ...review,
+                sharedBy: currentUser.email
+            });
+            
+            alert(`Review shared with ${targetEmail}!`);
+        };
+
+        // Save/unsave a review
+        window.toggleSaveReview = async (authorUid, reviewId) => {
+            if (!currentUser) return;
+            
+            const saveRef = ref(database, `savedReviews/${currentUser.uid}/${reviewId}`);
+            const snapshot = await get(saveRef);
+            
+            if (snapshot.exists()) {
+                // Unsave
+                await remove(saveRef);
+            } else {
+                // Save
+                await set(saveRef, {
+                    authorUid,
+                    reviewId,
+                    savedAt: new Date().toISOString()
+                });
+            }
+            
+            loadFeed();
+            loadSavedReviews();
+        };
+
+        // Add comment to a review
+        window.addComment = async (authorUid, reviewId) => {
+            if (!currentUser) return;
+            
+            const commentText = document.getElementById(`comment-input-${reviewId}`).value.trim();
+            if (!commentText) return;
+            
+            const commentId = Date.now().toString();
+            const commentRef = ref(database, `comments/${authorUid}/${reviewId}/${commentId}`);
+            
+            await set(commentRef, {
+                text: commentText,
+                authorUid: currentUser.uid,
+                authorEmail: currentUser.email,
+                authorUsername: null, // Will be populated below
+                createdAt: new Date().toISOString()
+            });
+            
+            // Get username
+            const userSnapshot = await get(ref(database, `users/${currentUser.uid}`));
+            const userData = userSnapshot.val();
+            if (userData?.username) {
+                await set(ref(database, `comments/${authorUid}/${reviewId}/${commentId}/authorUsername`), userData.username);
+            }
+            
+            // Clear input
+            document.getElementById(`comment-input-${reviewId}`).value = '';
+            
+            // Reload feed
+            loadFeed();
+            loadSavedReviews();
+        };
+
+        // Load saved reviews
+        async function loadSavedReviews() {
+            const savedRef = ref(database, `savedReviews/${currentUser.uid}`);
+            const snapshot = await get(savedRef);
+            
+            const savedDiv = document.getElementById('savedList');
+            
+            if (!snapshot.exists()) {
+                savedDiv.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No saved reviews yet!</h2>
+                        <p>Save reviews from your feed to reference them later.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const saved = snapshot.val();
+            const savedReviews = [];
+            
+            for (const saveData of Object.values(saved)) {
+                const reviewSnapshot = await get(ref(database, `reviews/${saveData.authorUid}/${saveData.reviewId}`));
+                if (reviewSnapshot.exists()) {
+                    const review = reviewSnapshot.val();
+                    const userSnapshot = await get(ref(database, `users/${saveData.authorUid}`));
+                    const emailSnapshot = await get(ref(database, `userEmails/${saveData.authorUid}`));
+                    const userData = userSnapshot.val();
+                    
+                    savedReviews.push({
+                        ...review,
+                        authorUsername: userData?.username || null,
+                        authorEmail: emailSnapshot.val(),
+                        authorUid: saveData.authorUid
+                    });
+                }
+            }
+            
+            savedReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            savedDiv.innerHTML = savedReviews.map(review => generateReviewHTML(review, true)).join('');
+        }
+
+        // Generate review HTML (shared between feed and saved)
+        function generateReviewHTML(review, showSavedBadge = false) {
+            const avgOverall = review.totalOverall / review.visits;
+            const avgTaste = review.totalTaste / review.visits;
+            const avgService = review.totalService / review.visits;
+            const avgAtmosphere = review.totalAtmosphere / review.visits;
+            const overallStars = '★'.repeat(Math.round(avgOverall)) + '☆'.repeat(5 - Math.round(avgOverall));
+            
+            const photosHtml = review.photos && review.photos.length > 0 
+                ? `<div class="review-photos">
+                    ${review.photos.map(photo => 
+                        `<img src="${photo}" class="review-photo" onclick="openLightbox('${photo}')" alt="Food photo">`
+                    ).join('')}
+                   </div>`
+                : '';
+
+            const addressHtml = review.address ? `<div class="dish">📍 ${review.address}</div>` : '';
+            const timeAgo = getTimeAgo(new Date(review.date));
+            
+            return `
+                <div class="feed-review" id="review-${review.id}">
+                    ${showSavedBadge ? '<div class="saved-badge">⭐ Saved</div>' : ''}
+                    <div class="feed-review-author">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(review.authorEmail)}&background=00ffff&color=0a0e27" alt="${review.authorEmail}">
+                        <div class="feed-review-author-info">
+                            <div class="feed-review-author-username">${review.authorUsername ? `@${review.authorUsername}` : review.authorEmail}</div>
+                            <div class="feed-review-author-time">${timeAgo}</div>
+                        </div>
+                    </div>
+                    <div class="review-header">
+                        <div class="review-title">
+                            <h3>${review.restaurantName}</h3>
+                            ${addressHtml}
+                            <div class="category-badges">
+                                <span class="badge badge-cuisine">${review.cuisineType || 'N/A'}</span>
+                                <span class="badge badge-style">${review.diningStyle || 'N/A'}</span>
+                            </div>
+                            <div class="dish">${review.dishName}</div>
+                        </div>
+                        <div class="review-rating">
+                            <div class="rating-stars">${overallStars}</div>
+                            <div class="visit-count">${review.visits} visit${review.visits > 1 ? 's' : ''} • Overall: ${avgOverall.toFixed(1)}</div>
+                            <div class="rating-breakdown">
+                                <div>
+                                    <span class="label">Taste:</span>
+                                    <span class="stars-small">${'★'.repeat(Math.round(avgTaste))}${'☆'.repeat(5 - Math.round(avgTaste))} ${avgTaste.toFixed(1)}</span>
+                                </div>
+                                <div>
+                                    <span class="label">Service:</span>
+                                    <span class="stars-small">${'★'.repeat(Math.round(avgService))}${'☆'.repeat(5 - Math.round(avgService))} ${avgService.toFixed(1)}</span>
+                                </div>
+                                <div>
+                                    <span class="label">Atmosphere:</span>
+                                    <span class="stars-small">${'★'.repeat(Math.round(avgAtmosphere))}${'☆'.repeat(5 - Math.round(avgAtmosphere))} ${avgAtmosphere.toFixed(1)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ${photosHtml}
+                    ${review.notes ? `<div class="review-notes">${review.notes}</div>` : ''}
+                    <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+                    
+                    <div class="review-interactions">
+                        <button class="interaction-btn" id="save-btn-${review.id}" onclick="toggleSaveReview('${review.authorUid}', '${review.id}')">
+                            💾 Save
+                        </button>
+                        <button class="interaction-btn" onclick="toggleComments('${review.id}')">
+                            💬 Comment
+                        </button>
+                    </div>
+                    
+                    <div class="comments-section" id="comments-${review.id}" style="display: none;">
+                        <div class="comments-header">Comments</div>
+                        <div id="comments-list-${review.id}"></div>
+                        <div class="comment-form">
+                            <input type="text" class="comment-input" id="comment-input-${review.id}" placeholder="Add a comment...">
+                            <button class="comment-submit" onclick="addComment('${review.authorUid}', '${review.id}')">Post</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Store user email for lookup
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userEmailRef = ref(database, `userEmails/${user.uid}`);
+                await set(userEmailRef, user.email);
+                loadUserProfile();
+            }
+        });
+
+        // Load user profile data
+        async function loadUserProfile() {
+            if (!currentUser) return;
+            
+            const userRef = ref(database, `users/${currentUser.uid}`);
+            const snapshot = await get(userRef);
+            const userData = snapshot.val();
+            
+            if (userData && userData.username) {
+                document.getElementById('profileUsernameDisplay').textContent = `@${userData.username}`;
+                document.getElementById('usernameInput').value = userData.username;
+            }
+            
+            // Load stats
+            const reviewsSnapshot = await get(ref(database, `reviews/${currentUser.uid}`));
+            const reviewsCount = reviewsSnapshot.exists() ? Object.keys(reviewsSnapshot.val()).length : 0;
+            document.getElementById('reviewsCount').textContent = reviewsCount;
+            
+            const followersSnapshot = await get(ref(database, `followers/${currentUser.uid}`));
+            const followersCount = followersSnapshot.exists() ? Object.keys(followersSnapshot.val()).length : 0;
+            document.getElementById('followersCount').textContent = followersCount;
+            
+            const followingSnapshot = await get(ref(database, `following/${currentUser.uid}`));
+            const followingCount = followingSnapshot.exists() ? Object.keys(followingSnapshot.val()).length : 0;
+            document.getElementById('followingCount').textContent = followingCount;
+            
+            // Set profile avatar
+            document.getElementById('profileAvatar').src = currentUser.photoURL || 'https://via.placeholder.com/80';
+            document.getElementById('profileDisplayName').textContent = currentUser.displayName || currentUser.email;
+            
+            loadFollowingList();
+            loadFeed();
+            loadSavedReviews();
+        }
+
+        // Set username
+        window.setUsername = async () => {
+            const username = document.getElementById('usernameInput').value.trim().replace('@', '');
+            if (!username) {
+                alert('Please enter a username');
+                return;
+            }
+            
+            if (username.length < 3) {
+                alert('Username must be at least 3 characters');
+                return;
+            }
+            
+            // Check if username is taken
+            const usernamesRef = ref(database, 'usernames');
+            const snapshot = await get(usernamesRef);
+            const usernames = snapshot.val() || {};
+            
+            if (usernames[username.toLowerCase()] && usernames[username.toLowerCase()] !== currentUser.uid) {
+                alert('Username already taken. Please choose another.');
+                return;
+            }
+            
+            // Save username
+            await set(ref(database, `usernames/${username.toLowerCase()}`), currentUser.uid);
+            await set(ref(database, `users/${currentUser.uid}/username`), username);
+            
+            document.getElementById('profileUsernameDisplay').textContent = `@${username}`;
+            alert('Username set successfully!');
+        };
+
+        // Search users
+        window.searchUsers = async () => {
+            const searchTerm = document.getElementById('userSearchInput').value.trim().toLowerCase();
+            if (!searchTerm) return;
+            
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '<p style="color: #007AFF; font-family: Courier New, monospace;">Searching...</p>';
+            
+            let foundUsers = [];
+            
+            // Search by username
+            const usernamesRef = ref(database, 'usernames');
+            const usernamesSnapshot = await get(usernamesRef);
+            const usernames = usernamesSnapshot.val() || {};
+            
+            for (const [username, uid] of Object.entries(usernames)) {
+                if (username.includes(searchTerm.replace('@', '')) && uid !== currentUser.uid) {
+                    const userSnapshot = await get(ref(database, `users/${uid}`));
+                    const emailSnapshot = await get(ref(database, `userEmails/${uid}`));
+                    foundUsers.push({
+                        uid,
+                        username,
+                        email: emailSnapshot.val()
+                    });
+                }
+            }
+            
+            // Search by email
+            const emailsRef = ref(database, 'userEmails');
+            const emailsSnapshot = await get(emailsRef);
+            const emails = emailsSnapshot.val() || {};
+            
+            for (const [uid, email] of Object.entries(emails)) {
+                if (email.toLowerCase().includes(searchTerm) && uid !== currentUser.uid) {
+                    const userSnapshot = await get(ref(database, `users/${uid}`));
+                    const userData = userSnapshot.val();
+                    if (!foundUsers.find(u => u.uid === uid)) {
+                        foundUsers.push({
+                            uid,
+                            username: userData?.username || null,
+                            email
+                        });
+                    }
+                }
+            }
+            
+            if (foundUsers.length === 0) {
+                resultsDiv.innerHTML = '<p style="color: #666666; font-family: Courier New, monospace;">No users found.</p>';
+                return;
+            }
+            
+            // Check following status
+            const followingSnapshot = await get(ref(database, `following/${currentUser.uid}`));
+            const following = followingSnapshot.val() || {};
+            
+            resultsDiv.innerHTML = foundUsers.map(user => `
+                <div class="user-result">
+                    <div class="user-result-info">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.email)}&background=00ffff&color=0a0e27" class="user-result-avatar" alt="${user.email}">
+                        <div class="user-result-details">
+                            <div class="user-result-username">${user.username ? `@${user.username}` : 'No username'}</div>
+                            <div class="user-result-email">${user.email}</div>
+                        </div>
+                    </div>
+                    <button class="follow-btn ${following[user.uid] ? 'following' : ''}" onclick="toggleFollow('${user.uid}')">
+                        ${following[user.uid] ? 'Unfollow' : 'Follow'}
+                    </button>
+                </div>
+            `).join('');
+        };
+
+        // Toggle follow
+        window.toggleFollow = async (targetUid) => {
+            const followingRef = ref(database, `following/${currentUser.uid}/${targetUid}`);
+            const followerRef = ref(database, `followers/${targetUid}/${currentUser.uid}`);
+            
+            const snapshot = await get(followingRef);
+            
+            if (snapshot.exists()) {
+                // Unfollow
+                await remove(followingRef);
+                await remove(followerRef);
+            } else {
+                // Follow
+                await set(followingRef, true);
+                await set(followerRef, true);
+            }
+            
+            loadUserProfile();
+            searchUsers(); // Refresh search results
+            loadFeed();
+        };
+
+        // Load following list
+        async function loadFollowingList() {
+            const followingSnapshot = await get(ref(database, `following/${currentUser.uid}`));
+            const following = followingSnapshot.val() || {};
+            
+            const followingDiv = document.getElementById('followingList');
+            
+            if (Object.keys(following).length === 0) {
+                followingDiv.innerHTML = '<p style="color: #666666; font-family: Courier New, monospace;">Not following anyone yet.</p>';
+                return;
+            }
+            
+            const users = await Promise.all(
+                Object.keys(following).map(async uid => {
+                    const userSnapshot = await get(ref(database, `users/${uid}`));
+                    const emailSnapshot = await get(ref(database, `userEmails/${uid}`));
+                    return {
+                        uid,
+                        username: userSnapshot.val()?.username || null,
+                        email: emailSnapshot.val()
+                    };
+                })
+            );
+            
+            followingDiv.innerHTML = users.map(user => `
+                <div class="user-result">
+                    <div class="user-result-info">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.email)}&background=00ffff&color=0a0e27" class="user-result-avatar" alt="${user.email}">
+                        <div class="user-result-details">
+                            <div class="user-result-username">${user.username ? `@${user.username}` : 'No username'}</div>
+                            <div class="user-result-email">${user.email}</div>
+                        </div>
+                    </div>
+                    <button class="follow-btn following" onclick="toggleFollow('${user.uid}')">Unfollow</button>
+                </div>
+            `).join('');
+        }
+
+        // Load feed
+        async function loadFeed() {
+            const followingSnapshot = await get(ref(database, `following/${currentUser.uid}`));
+            const following = followingSnapshot.val() || {};
+            
+            const feedDiv = document.getElementById('feedList');
+            
+            if (Object.keys(following).length === 0) {
+                feedDiv.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No reviews in your feed!</h2>
+                        <p>Follow other users to see their reviews here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const allReviews = [];
+            
+            for (const uid of Object.keys(following)) {
+                const reviewsSnapshot = await get(ref(database, `reviews/${uid}`));
+                if (reviewsSnapshot.exists()) {
+                    const userSnapshot = await get(ref(database, `users/${uid}`));
+                    const emailSnapshot = await get(ref(database, `userEmails/${uid}`));
+                    const userData = userSnapshot.val();
+                    const reviews = Object.values(reviewsSnapshot.val());
+                    
+                    reviews.forEach(review => {
+                        allReviews.push({
+                            ...review,
+                            authorUsername: userData?.username || null,
+                            authorEmail: emailSnapshot.val(),
+                            authorUid: uid
+                        });
+                    });
+                }
+            }
+            
+            // Sort by date
+            allReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            if (allReviews.length === 0) {
+                feedDiv.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No reviews yet!</h2>
+                        <p>The people you follow haven't posted any reviews.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            feedDiv.innerHTML = allReviews.map(review => generateReviewHTML(review, false)).join('');
+            
+            // Load comments and saved status for each review
+            for (const review of allReviews) {
+                await loadComments(review.authorUid, review.id);
+                await updateSaveButtonState(review.id);
+            }
+        }
+
+        // Load comments for a review
+        async function loadComments(authorUid, reviewId) {
+            const commentsSnapshot = await get(ref(database, `comments/${authorUid}/${reviewId}`));
+            const commentsList = document.getElementById(`comments-list-${reviewId}`);
+            
+            if (!commentsSnapshot.exists()) {
+                commentsList.innerHTML = '<p style="color: #666666; font-family: Courier New, monospace; font-size: 0.9em;">No comments yet. Be the first!</p>';
+                return;
+            }
+            
+            const comments = Object.values(commentsSnapshot.val());
+            comments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            
+            commentsList.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-author">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(comment.authorEmail)}&background=00ffff&color=0a0e27" class="comment-avatar" alt="${comment.authorEmail}">
+                        <span class="comment-author-name">${comment.authorUsername ? `@${comment.authorUsername}` : comment.authorEmail}</span>
+                        <span class="comment-time">${getTimeAgo(new Date(comment.createdAt))}</span>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle comments visibility
+        window.toggleComments = async (reviewId) => {
+            const commentsSection = document.getElementById(`comments-${reviewId}`);
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+            } else {
+                commentsSection.style.display = 'none';
+            }
+        };
+
+        // Update save button state
+        async function updateSaveButtonState(reviewId) {
+            const saveRef = ref(database, `savedReviews/${currentUser.uid}/${reviewId}`);
+            const snapshot = await get(saveRef);
+            const saveBtn = document.getElementById(`save-btn-${reviewId}`);
+            
+            if (saveBtn) {
+                if (snapshot.exists()) {
+                    saveBtn.classList.add('saved');
+                    saveBtn.innerHTML = '⭐ Saved';
+                } else {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '💾 Save';
+                }
+            }
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+            return date.toLocaleDateString();
+        }
+    </script>
+
+    <script>
+        let currentReviewType = 'restaurant';
+
+        // Switch between restaurant and product review types
+        function switchReviewType(type) {
+            currentReviewType = type;
+            
+            // Update button states
+            document.getElementById('restaurantTypeBtn').classList.toggle('active', type === 'restaurant');
+            document.getElementById('productTypeBtn').classList.toggle('active', type === 'product');
+            
+            // Show/hide appropriate fields
+            document.getElementById('restaurantFields').style.display = type === 'restaurant' ? 'block' : 'none';
+            document.getElementById('productFields').style.display = type === 'product' ? 'block' : 'none';
+            
+            // Update rating labels and placeholders
+            if (type === 'restaurant') {
+                document.getElementById('rating1Label').textContent = 'Taste / Quality of Food *';
+                document.getElementById('rating2Label').textContent = 'Service *';
+                document.getElementById('rating3Label').textContent = 'Atmosphere / Vibes *';
+                
+                document.getElementById('tasteNotes').placeholder = 'How did the food taste?';
+                document.getElementById('serviceNotes').placeholder = 'How was the service? Were they speedy, slow, nice?';
+                document.getElementById('atmosphereNotes').placeholder = 'How was the ambiance? Was the music loud? Did it feel romantic or casual?';
+            } else {
+                document.getElementById('rating1Label').textContent = 'Quality / Performance *';
+                document.getElementById('rating2Label').textContent = 'Value for Money *';
+                document.getElementById('rating3Label').textContent = 'Overall Experience *';
+                
+                document.getElementById('tasteNotes').placeholder = 'Quality ingredients, is it a durable product?';
+                document.getElementById('serviceNotes').placeholder = 'Was the cost worth it in your eyes?';
+                document.getElementById('atmosphereNotes').placeholder = 'How did this product make you feel? Did it boost performance, make your life better?';
+            }
+            
+            // Filter reviews by type
+            displayReviews();
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            if (tabName === 'myReviews') {
+                document.getElementById('myReviewsTab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            } else if (tabName === 'feed') {
+                document.getElementById('feedTab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            } else if (tabName === 'saved') {
+                document.getElementById('savedTab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[2].classList.add('active');
+            } else if (tabName === 'social') {
+                document.getElementById('socialTab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[3].classList.add('active');
+            }
+        }
+    </script>
+
+    <!-- Add/Edit Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Review</h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <form id="reviewForm" onsubmit="saveReview(event)">
+                <input type="hidden" id="reviewId" value="">
+                <input type="hidden" id="reviewType" value="restaurant">
+                
+                <!-- Restaurant Fields -->
+                <div id="restaurantFields">
+                    <div class="form-group">
+                        <label for="restaurantName">Restaurant Name *</label>
+                        <input type="text" id="restaurantName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address / Location</label>
+                        <input type="text" id="address" placeholder="123 Main St, City, State">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cuisineType">Cuisine Type *</label>
+                        <select id="cuisineType">
+                            <option value="">Select cuisine type...</option>
+                            <option value="American">American</option>
+                            <option value="Mexican">Mexican</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Thai">Thai</option>
+                            <option value="Korean">Korean</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                            <option value="Indian">Indian</option>
+                            <option value="Mediterranean">Mediterranean</option>
+                            <option value="French">French</option>
+                            <option value="Greek">Greek</option>
+                            <option value="BBQ">BBQ</option>
+                            <option value="Seafood">Seafood</option>
+                            <option value="Pizza">Pizza</option>
+                            <option value="Burgers">Burgers</option>
+                            <option value="Sushi">Sushi</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Fusion">Fusion</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diningStyle">Dining Style *</label>
+                        <select id="diningStyle">
+                            <option value="">Select dining style...</option>
+                            <option value="Fast Food">🍔 Fast Food</option>
+                            <option value="Sit Down">🪑 Sit Down</option>
+                            <option value="Fancy Feast">🍽️ Fancy Feast</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dishName">What Did You Order? *</label>
+                        <input type="text" id="dishName">
+                    </div>
+                </div>
+
+                <!-- Product Fields -->
+                <div id="productFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="productName">Product Name *</label>
+                        <input type="text" id="productName" placeholder="e.g., Nike Air Max 270">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productBrand">Brand</label>
+                        <input type="text" id="productBrand" placeholder="e.g., Nike, Apple, Optimum Nutrition">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productCategory">Category *</label>
+                        <select id="productCategory">
+                            <option value="">Select category...</option>
+                            <option value="Tech">📱 Tech & Electronics</option>
+                            <option value="Shoes">👟 Shoes & Footwear</option>
+                            <option value="Clothing">👕 Clothing & Apparel</option>
+                            <option value="Supplements">💊 Supplements & Vitamins</option>
+                            <option value="Fitness">🏋️ Fitness Equipment</option>
+                            <option value="Beauty">💄 Beauty & Skincare</option>
+                            <option value="Food Products">🥫 Food Products</option>
+                            <option value="Beverages">🥤 Beverages</option>
+                            <option value="Books">📚 Books & Media</option>
+                            <option value="Gaming">🎮 Gaming</option>
+                            <option value="Home">🏠 Home & Kitchen</option>
+                            <option value="Sports">⚽ Sports Equipment</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productWhere">Where'd You Get It?</label>
+                        <input type="text" id="productWhere" placeholder="e.g., Amazon, Nike Store, GNC">
+                    </div>
+                </div>
+
+                <!-- Common Rating Fields -->
+
+                <!-- Common Rating Fields -->
+                <div class="form-group">
+                    <label id="rating1Label">Quality *</label>
+                    <div class="stars" id="tasteStars">
+                        <span class="star" data-rating="1" onclick="setRating('taste', 1)">★</span>
+                        <span class="star" data-rating="2" onclick="setRating('taste', 2)">★</span>
+                        <span class="star" data-rating="3" onclick="setRating('taste', 3)">★</span>
+                        <span class="star" data-rating="4" onclick="setRating('taste', 4)">★</span>
+                        <span class="star" data-rating="5" onclick="setRating('taste', 5)">★</span>
+                    </div>
+                    <input type="hidden" id="tasteRating">
+                    <textarea id="tasteNotes" class="rating-comment" rows="2" placeholder=""></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label id="rating2Label">Value for Money *</label>
+                    <div class="stars" id="serviceStars">
+                        <span class="star" data-rating="1" onclick="setRating('service', 1)">★</span>
+                        <span class="star" data-rating="2" onclick="setRating('service', 2)">★</span>
+                        <span class="star" data-rating="3" onclick="setRating('service', 3)">★</span>
+                        <span class="star" data-rating="4" onclick="setRating('service', 4)">★</span>
+                        <span class="star" data-rating="5" onclick="setRating('service', 5)">★</span>
+                    </div>
+                    <input type="hidden" id="serviceRating">
+                    <textarea id="serviceNotes" class="rating-comment" rows="2" placeholder=""></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label id="rating3Label">Experience *</label>
+                    <div class="stars" id="atmosphereStars">
+                        <span class="star" data-rating="1" onclick="setRating('atmosphere', 1)">★</span>
+                        <span class="star" data-rating="2" onclick="setRating('atmosphere', 2)">★</span>
+                        <span class="star" data-rating="3" onclick="setRating('atmosphere', 3)">★</span>
+                        <span class="star" data-rating="4" onclick="setRating('atmosphere', 4)">★</span>
+                        <span class="star" data-rating="5" onclick="setRating('atmosphere', 5)">★</span>
+                    </div>
+                    <input type="hidden" id="atmosphereRating">
+                    <textarea id="atmosphereNotes" class="rating-comment" rows="2" placeholder=""></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Overall Thoughts</label>
+                    <textarea id="notes" placeholder="Any additional thoughts or details..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Final Verdict *</label>
+                    <div class="pass-ass-container">
+                        <label class="pass-ass-option">
+                            <input type="radio" name="verdict" value="pass" id="verdictPass" required>
+                            <span class="pass-box">✅ PASS</span>
+                        </label>
+                        <label class="pass-ass-option">
+                            <input type="radio" name="verdict" value="ass" id="verdictAss" required>
+                            <span class="ass-box">🍑 ASS</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Photos</label>
+                    <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+                        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+                        <p>📷 Click to add photos</p>
+                    </div>
+                    <div class="photo-preview" id="photoPreview"></div>
+                </div>
+
+                <button type="submit" class="submit-btn">Save Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox for viewing photos -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">×</span>
+        <img id="lightboxImg" src="" alt="Photo">
+    </div>
+
+    <script>
+        let reviews = [];
+        let currentPhotos = [];
+        let editingReviewId = null;
+
+        // Load reviews on page load - now handled by Firebase auth observer
+        window.addEventListener('DOMContentLoaded', () => {
+            // Map will initialize when Google Maps loads
+        });
+
+        async function saveReview(event) {
+            event.preventDefault();
+
+            const restaurantName = document.getElementById('restaurantName').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const cuisineType = document.getElementById('cuisineType').value;
+            const diningStyle = document.getElementById('diningStyle').value;
+            const dishName = document.getElementById('dishName').value.trim();
+            const tasteRating = parseInt(document.getElementById('tasteRating').value);
+            const serviceRating = parseInt(document.getElementById('serviceRating').value);
+            const atmosphereRating = parseInt(document.getElementById('atmosphereRating').value);
+            const notes = document.getElementById('notes').value.trim();
+
+            if (!tasteRating || !serviceRating || !atmosphereRating) {
+                alert('Please select all ratings');
+                return;
+            }
+
+            if (!cuisineType || !diningStyle) {
+                alert('Please select cuisine type and dining style');
+                return;
+            }
+
+            const overallRating = (tasteRating + serviceRating + atmosphereRating) / 3;
+
+            const review = {
+                id: editingReviewId || Date.now().toString(),
+                restaurantName,
+                address,
+                cuisineType,
+                diningStyle,
+                dishName,
+                tasteRating,
+                serviceRating,
+                atmosphereRating,
+                overallRating,
+                notes,
+                photos: currentPhotos,
+                date: new Date().toISOString(),
+                visits: 1,
+                totalTaste: tasteRating,
+                totalService: serviceRating,
+                totalAtmosphere: atmosphereRating,
+                totalOverall: overallRating
+            };
+
+            // Check if this restaurant already exists
+            const existingRestaurantReviews = reviews.filter(r => 
+                r.restaurantName.toLowerCase() === restaurantName.toLowerCase() && r.id !== review.id
+            );
+
+            if (existingRestaurantReviews.length > 0 && !editingReviewId) {
+                // This is a new visit to an existing restaurant
+                review.visits = existingRestaurantReviews[0].visits + 1;
+                review.totalTaste = existingRestaurantReviews[0].totalTaste + tasteRating;
+                review.totalService = existingRestaurantReviews[0].totalService + serviceRating;
+                review.totalAtmosphere = existingRestaurantReviews[0].totalAtmosphere + atmosphereRating;
+                review.totalOverall = existingRestaurantReviews[0].totalOverall + overallRating;
+                
+                // Update all reviews for this restaurant
+                for (let r of existingRestaurantReviews) {
+                    r.visits = review.visits;
+                    r.totalTaste = review.totalTaste;
+                    r.totalService = review.totalService;
+                    r.totalAtmosphere = review.totalAtmosphere;
+                    r.totalOverall = review.totalOverall;
+                    await window.storage.set(`review:${r.id}`, JSON.stringify(r));
+                }
+            }
+
+            // Save the new review
+            try {
+                await window.saveReviewToFirebase(review);
+                
+                if (editingReviewId) {
+                    const index = reviews.findIndex(r => r.id === editingReviewId);
+                    reviews[index] = review;
+                } else {
+                    reviews.unshift(review);
+                }
+
+                closeModal();
+                updateFilters();
+                displayReviews();
+                updateMap();
+            } catch (error) {
+                alert('Failed to save review. Please try again.');
+                console.error('Save error:', error);
+            }
+        }
+
+        function displayReviews() {
+            const reviewsList = document.getElementById('reviewsList');
+            const emptyState = document.getElementById('emptyState');
+            
+            const selectedCity = document.getElementById('cityFilter').value;
+            const selectedCuisine = document.getElementById('cuisineFilter').value;
+            const selectedStyle = document.getElementById('diningStyleFilter').value;
+            
+            let filteredReviews = reviews;
+            
+            // Apply filters
+            if (selectedCity !== 'all') {
+                filteredReviews = filteredReviews.filter(r => {
+                    if (!r.address) return false;
+                    return r.address.toLowerCase().includes(selectedCity.toLowerCase());
+                });
+            }
+            
+            if (selectedCuisine !== 'all') {
+                filteredReviews = filteredReviews.filter(r => r.cuisineType === selectedCuisine);
+            }
+            
+            if (selectedStyle !== 'all') {
+                filteredReviews = filteredReviews.filter(r => r.diningStyle === selectedStyle);
+            }
+
+            if (filteredReviews.length === 0) {
+                reviewsList.innerHTML = '';
+                emptyState.style.display = 'block';
+                if (selectedCity !== 'all' || selectedCuisine !== 'all' || selectedStyle !== 'all') {
+                    emptyState.querySelector('h2').textContent = 'No reviews match your filters!';
+                    emptyState.querySelector('p').textContent = 'Try adjusting your filters or add new reviews.';
+                } else {
+                    emptyState.querySelector('h2').textContent = 'No reviews yet!';
+                    emptyState.querySelector('p').textContent = 'Start tracking your dining experiences by adding your first review.';
+                }
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            reviewsList.innerHTML = filteredReviews.map(review => {
+                const avgOverall = review.totalOverall / review.visits;
+                const avgTaste = review.totalTaste / review.visits;
+                const avgService = review.totalService / review.visits;
+                const avgAtmosphere = review.totalAtmosphere / review.visits;
+                
+                const overallStars = '★'.repeat(Math.round(avgOverall)) + '☆'.repeat(5 - Math.round(avgOverall));
+                
+                const photosHtml = review.photos.length > 0 
+                    ? `<div class="review-photos">
+                        ${review.photos.map(photo => 
+                            `<img src="${photo}" class="review-photo" onclick="openLightbox('${photo}')" alt="Food photo">`
+                        ).join('')}
+                       </div>`
+                    : '';
+
+                const addressHtml = review.address ? `<div class="dish">📍 ${review.address}</div>` : '';
+
+                return `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-title">
+                                <h3>${review.restaurantName}</h3>
+                                ${addressHtml}
+                                <div class="category-badges">
+                                    <span class="badge badge-cuisine">${review.cuisineType || 'N/A'}</span>
+                                    <span class="badge badge-style">${review.diningStyle || 'N/A'}</span>
+                                </div>
+                                <div class="dish">${review.dishName}</div>
+                            </div>
+                            <div class="review-rating">
+                                <div class="rating-stars">${overallStars}</div>
+                                <div class="visit-count">${review.visits} visit${review.visits > 1 ? 's' : ''} • Overall: ${avgOverall.toFixed(1)}</div>
+                                <div class="rating-breakdown">
+                                    <div>
+                                        <span class="label">Taste:</span>
+                                        <span class="stars-small">${'★'.repeat(Math.round(avgTaste))}${'☆'.repeat(5 - Math.round(avgTaste))} ${avgTaste.toFixed(1)}</span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Service:</span>
+                                        <span class="stars-small">${'★'.repeat(Math.round(avgService))}${'☆'.repeat(5 - Math.round(avgService))} ${avgService.toFixed(1)}</span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Atmosphere:</span>
+                                        <span class="stars-small">${'★'.repeat(Math.round(avgAtmosphere))}${'☆'.repeat(5 - Math.round(avgAtmosphere))} ${avgAtmosphere.toFixed(1)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        ${photosHtml}
+                        ${review.notes ? `<div class="review-notes">${review.notes}</div>` : ''}
+                        <div class="review-footer">
+                            <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+                            <div class="review-actions">
+                                <button class="action-btn" onclick="editReview('${review.id}')">Add Visit</button>
+                                <button class="action-btn delete-btn" onclick="deleteReview('${review.id}')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openModal() {
+            const type = currentReviewType;
+            document.getElementById('reviewType').value = type;
+            
+            if (type === 'restaurant') {
+                document.getElementById('modalTitle').textContent = 'Add Restaurant Review';
+                document.getElementById('tasteNotes').placeholder = 'How did the food taste?';
+                document.getElementById('serviceNotes').placeholder = 'How was the service? Were they speedy, slow, nice?';
+                document.getElementById('atmosphereNotes').placeholder = 'How was the ambiance? Was the music loud? Did it feel romantic or casual?';
+            } else {
+                document.getElementById('modalTitle').textContent = 'Add Product Review';
+                document.getElementById('tasteNotes').placeholder = 'Quality ingredients, is it a durable product?';
+                document.getElementById('serviceNotes').placeholder = 'Was the cost worth it in your eyes?';
+                document.getElementById('atmosphereNotes').placeholder = 'How did this product make you feel? Did it boost performance, make your life better?';
+            }
+            
+            document.getElementById('reviewModal').classList.add('active');
+            document.getElementById('reviewForm').reset();
+            document.getElementById('reviewId').value = '';
+            editingReviewId = null;
+            currentPhotos = [];
+            document.getElementById('photoPreview').innerHTML = '';
+            updateStarDisplay('taste', 0);
+            updateStarDisplay('service', 0);
+            updateStarDisplay('atmosphere', 0);
+            
+            // Clear verdict radio buttons
+            document.getElementById('verdictPass').checked = false;
+            document.getElementById('verdictAss').checked = false;
+            
+            // Show correct fields
+            document.getElementById('restaurantFields').style.display = type === 'restaurant' ? 'block' : 'none';
+            document.getElementById('productFields').style.display = type === 'product' ? 'block' : 'none';
+        }
+
+        function closeModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+        }
+
+        function setRating(type, rating) {
+            document.getElementById(`${type}Rating`).value = rating;
+            updateStarDisplay(type, rating);
+        }
+
+        function updateStarDisplay(type, rating) {
+            const stars = document.querySelectorAll(`#${type}Stars .star`);
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function handlePhotoUpload(event) {
+            const files = Array.from(event.target.files);
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentPhotos.push(e.target.result);
+                    displayPhotoPreview();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function displayPhotoPreview() {
+            const preview = document.getElementById('photoPreview');
+            preview.innerHTML = currentPhotos.map((photo, index) => `
+                <div class="photo-preview-item">
+                    <img src="${photo}" alt="Preview">
+                    <button type="button" class="remove-photo" onclick="removePhoto(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        function removePhoto(index) {
+            currentPhotos.splice(index, 1);
+            displayPhotoPreview();
+        }
+
+        function editReview(id) {
+            const review = reviews.find(r => r.id === id);
+            if (!review) return;
+
+            document.getElementById('modalTitle').textContent = `Add Visit to ${review.restaurantName}`;
+            document.getElementById('restaurantName').value = review.restaurantName;
+            document.getElementById('address').value = review.address || '';
+            document.getElementById('cuisineType').value = review.cuisineType || '';
+            document.getElementById('diningStyle').value = review.diningStyle || '';
+            document.getElementById('dishName').value = '';
+            document.getElementById('notes').value = '';
+            document.getElementById('tasteRating').value = '';
+            document.getElementById('serviceRating').value = '';
+            document.getElementById('atmosphereRating').value = '';
+            updateStarDisplay('taste', 0);
+            updateStarDisplay('service', 0);
+            updateStarDisplay('atmosphere', 0);
+            currentPhotos = [];
+            document.getElementById('photoPreview').innerHTML = '';
+            editingReviewId = null; // We want to create a new entry
+            document.getElementById('reviewModal').classList.add('active');
+        }
+
+        function updateFilters() {
+            // Update city filter
+            const cityFilter = document.getElementById('cityFilter');
+            const cities = new Set();
+            
+            reviews.forEach(review => {
+                if (review.address) {
+                    const parts = review.address.split(',').map(p => p.trim());
+                    if (parts.length >= 2) {
+                        cities.add(parts[parts.length - 2]);
+                    } else if (parts.length === 1) {
+                        cities.add(parts[0]);
+                    }
+                }
+            });
+            
+            const currentCitySelection = cityFilter.value;
+            cityFilter.innerHTML = '<option value="all">All Cities</option>';
+            
+            Array.from(cities).sort().forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                cityFilter.appendChild(option);
+            });
+            
+            if (currentCitySelection !== 'all' && cities.has(currentCitySelection)) {
+                cityFilter.value = currentCitySelection;
+            }
+
+            // Update cuisine filter
+            const cuisineFilter = document.getElementById('cuisineFilter');
+            const cuisines = new Set();
+            
+            reviews.forEach(review => {
+                if (review.cuisineType) {
+                    cuisines.add(review.cuisineType);
+                }
+            });
+            
+            const currentCuisineSelection = cuisineFilter.value;
+            cuisineFilter.innerHTML = '<option value="all">All Cuisines</option>';
+            
+            Array.from(cuisines).sort().forEach(cuisine => {
+                const option = document.createElement('option');
+                option.value = cuisine;
+                option.textContent = cuisine;
+                cuisineFilter.appendChild(option);
+            });
+            
+            if (currentCuisineSelection !== 'all' && cuisines.has(currentCuisineSelection)) {
+                cuisineFilter.value = currentCuisineSelection;
+            }
+
+            // Update dining style filter
+            const styleFilter = document.getElementById('diningStyleFilter');
+            const styles = new Set();
+            
+            reviews.forEach(review => {
+                if (review.diningStyle) {
+                    styles.add(review.diningStyle);
+                }
+            });
+            
+            const currentStyleSelection = styleFilter.value;
+            styleFilter.innerHTML = '<option value="all">All Styles</option>';
+            
+            const styleOrder = ['Fast Food', 'Sit Down', 'Fancy Feast'];
+            styleOrder.forEach(style => {
+                if (styles.has(style)) {
+                    const option = document.createElement('option');
+                    option.value = style;
+                    const emoji = style === 'Fast Food' ? '🍔' : style === 'Sit Down' ? '🪑' : '🍽️';
+                    option.textContent = `${emoji} ${style}`;
+                    styleFilter.appendChild(option);
+                }
+            });
+            
+            if (currentStyleSelection !== 'all' && styles.has(currentStyleSelection)) {
+                styleFilter.value = currentStyleSelection;
+            }
+        }
+
+        function applyFilters() {
+            displayReviews();
+        }
+
+        let map;
+        let markers = [];
+        let geocoder;
+
+        function initMap() {
+            // Initialize map centered on the US
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: { lat: 39.8283, lng: -98.5795 }, // Center of US
+                styles: [
+                    {
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#FFFFFF"}]
+                    },
+                    {
+                        "elementType": "labels.text.fill",
+                        "stylers": [{"color": "#007AFF"}]
+                    },
+                    {
+                        "elementType": "labels.text.stroke",
+                        "stylers": [{"color": "#FFFFFF"}]
+                    },
+                    {
+                        "featureType": "administrative",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{"color": "#007AFF"}, {"weight": 1}]
+                    },
+                    {
+                        "featureType": "landscape",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#1a1e3f"}]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#1a1e3f"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#2a2e4f"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{"color": "#FFFFFF"}]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#000814"}]
+                    }
+                ]
+            });
+
+            geocoder = new google.maps.Geocoder();
+            updateMap();
+        }
+
+        async function updateMap() {
+            if (!map || !geocoder) return;
+
+            // Clear existing markers
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+
+            const cities = new Set();
+            const processedAddresses = new Set();
+
+            for (const review of reviews) {
+                if (review.address && !processedAddresses.has(review.address.toLowerCase())) {
+                    processedAddresses.add(review.address.toLowerCase());
+                    
+                    try {
+                        const result = await geocoder.geocode({ address: review.address });
+                        if (result.results && result.results[0]) {
+                            const location = result.results[0].geometry.location;
+                            
+                            // Create a custom red marker
+                            const marker = new google.maps.Marker({
+                                position: location,
+                                map: map,
+                                title: review.restaurantName,
+                                icon: {
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    scale: 8,
+                                    fillColor: '#FF3B30',
+                                    fillOpacity: 1,
+                                    strokeColor: '#FF3B30',
+                                    strokeWeight: 2
+                                },
+                                animation: google.maps.Animation.DROP
+                            });
+
+                            // Add info window
+                            const infoWindow = new google.maps.InfoWindow({
+                                content: `<div style="color: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                    <strong>${review.restaurantName}</strong><br>
+                                    ${review.address}
+                                </div>`
+                            });
+
+                            marker.addListener('click', () => {
+                                infoWindow.open(map, marker);
+                            });
+
+                            markers.push(marker);
+                            cities.add(review.address.split(',')[0].trim());
+                        }
+                    } catch (error) {
+                        console.log('Geocoding error for:', review.address);
+                    }
+                }
+            }
+
+            // Update stats
+            document.getElementById('reviewCount').textContent = `${reviews.length} review${reviews.length !== 1 ? 's' : ''}`;
+            document.getElementById('cityCount').textContent = `${cities.size} ${cities.size !== 1 ? 'cities' : 'city'}`;
+        }
+
+        // Make initMap available globally
+        window.initMap = initMap;
+
+        async function deleteReview(id) {
+            if (!confirm('Are you sure you want to delete this review?')) return;
+
+            try {
+                await window.deleteReviewFromFirebase(id);
+                reviews = reviews.filter(r => r.id !== id);
+                updateFilters();
+                displayReviews();
+                updateMap();
+            } catch (error) {
+                alert('Failed to delete review. Please try again.');
+                console.error('Delete error:', error);
+            }
+        }
+
+        async function shareReview(id) {
+            const email = prompt('Enter the email address of the person you want to share this review with:');
+            if (!email) return;
+            
+            try {
+                await window.shareReviewWith(id, email);
+            } catch (error) {
+                console.error('Share error:', error);
+                alert('Failed to share review. Please try again.');
+            }
+        }
+
+        function openLightbox(photoSrc) {
+            document.getElementById('lightboxImg').src = photoSrc;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('reviewModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+# Development files
+*.log
+*.cache
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if you add build tools later)
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Backup files
+*.backup
+*.bak
+*-backup.html
+
+# Firebase files (don't commit your actual config!)
+# Remember to replace YOUR_API_KEY in the HTML file before deploying
+firebase-config.js
+
+# OS files
+.DS_Store
+desktop.ini
