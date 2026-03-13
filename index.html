@@ -4194,10 +4194,10 @@
                 document.getElementById('tasteRating').value = '';
                 document.getElementById('serviceRating').value = '';
                 document.getElementById('atmosphereRating').value = '';
-                window.window.updateStarDisplay('taste', 0);
-                window.window.updateStarDisplay('service', 0);
-                window.window.updateStarDisplay('atmosphere', 0);
-                
+                window.updateStarDisplay('taste', 0);
+                window.updateStarDisplay('service', 0);
+                window.updateStarDisplay('atmosphere', 0);
+
                 // Clear verdict radio buttons
                 document.getElementById('verdictPass').checked = false;
                 document.getElementById('verdictAss').checked = false;
@@ -4406,9 +4406,9 @@
             document.getElementById('tasteRating').value = '';
             document.getElementById('serviceRating').value = '';
             document.getElementById('atmosphereRating').value = '';
-            window.window.updateStarDisplay('taste', 0);
-            window.window.updateStarDisplay('service', 0);
-            window.window.updateStarDisplay('atmosphere', 0);
+            window.updateStarDisplay('taste', 0);
+            window.updateStarDisplay('service', 0);
+            window.updateStarDisplay('atmosphere', 0);
             window.currentPhotos = [];
             document.getElementById('photoPreview').innerHTML = '';
             window.editingReviewId = null; // New entry
@@ -4607,7 +4607,7 @@
                     const marker = new google.maps.Marker({
                         position: location,
                         map: map,
-                        title: review.restaurantName,
+                        title: review.restaurantName || review.productName,
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
                             scale: 8,
@@ -4622,7 +4622,7 @@
                             // Add info window
                             const infoWindow = new google.maps.InfoWindow({
                                 content: `<div style="color: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-                                    <strong>${review.restaurantName}</strong><br>
+                                    <strong>${review.restaurantName || review.productName}</strong><br>
                                     ${review.address}
                                 </div>`
                             });
@@ -4633,9 +4633,6 @@
 
                             markers.push(marker);
                             cities.add(review.address.split(',')[0].trim());
-                        }
-                    } catch (error) {
-                        console.log('Geocoding error for:', review.address);
                     }
                 }
             }
